@@ -9,8 +9,11 @@ Vcs-Git: git://git.linuxfoundation.org/diamon/minicoredumper.git
 Vcs-Browser: http://git.linuxfoundation.org/?p=diamon/minicoredumper.git;a=summary
 
 Package: minicoredumper
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, lsb-base, adduser
+Architecture: linux-any
+Depends: ${shlibs:Depends}, ${misc:Depends}, lsb-base (>= 3.2-14), adduser
+Provides: core-dump-handler
+Conflicts: core-dump-handler
+Replaces: core-dump-handler
 Description: generate minimal and customized core dump files on Linux
  minicoredumper is a program that handles the creation of core dump files on
  Linux. It can produce much smaller core dump files by making use of sparse
@@ -18,7 +21,7 @@ Description: generate minimal and customized core dump files on Linux
  process memory image should be dumped.
 
 Package: minicoredumper-utils
-Architecture: any
+Architecture: linux-any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: minicoredumper utilities
  The minicoredumper project provides tools for working with applications
@@ -27,7 +30,7 @@ Description: minicoredumper utilities
 
 Package: libminicoredumper-dev
 Section: libdevel
-Architecture: any
+Architecture: linux-any
 Depends: libminicoredumper2 (= ${binary:Version}), ${misc:Depends}
 Description: minicoredumper library development files
  Using libminicoredumper, an application can register exactly what data
@@ -37,7 +40,7 @@ Description: minicoredumper library development files
  This package provides a dynamic library and a C header file.
 
 Package: libminicoredumper2
-Architecture: any
+Architecture: linux-any
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${misc:Pre-Depends}
 Description: minicoredumper library
  Using libminicoredumper, an application can register exactly what data

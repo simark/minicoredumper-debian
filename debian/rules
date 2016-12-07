@@ -21,6 +21,7 @@ export MCD_REGD_USER_GROUP = mcd:mcd
 
 override_dh_fixperms:
 	dh_fixperms --exclude var/crash
+	chmod 0755 debian/minicoredumper/var/crash
 
 # main packaging script based on dh7 syntax
 %:

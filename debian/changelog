@@ -1,3 +1,15 @@
+minicoredumper (2.0.0-2) unstable; urgency=medium
+
+  * Require lsb-base >= 3.2-14 because reliance on /lib/lsb/init-functions
+  * Limit packages to Linux
+  * Fix build error on arch=x32 due to time_t with snprintf
+  * Prevent co-installation with other core dumper handler, reported by
+    Paul Wise, thanks (Closes: #846544)
+  * Fix /var/crash permissions, reported and patch by Chris Lamb, thanks
+    (Closes: #846588)
+
+ -- John Ogness <john.ogness@linutronix.de>  Fri, 02 Dec 2016 16:22:33 +0100
+
 minicoredumper (2.0.0-1) unstable; urgency=low
 
   * Initial release (Closes: #837539)
