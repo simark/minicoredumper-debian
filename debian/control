@@ -31,6 +31,7 @@ Description: minicoredumper utilities
 Package: libminicoredumper-dev
 Section: libdevel
 Architecture: linux-any
+Multi-Arch: same
 Depends: libminicoredumper2 (= ${binary:Version}), ${misc:Depends}
 Description: minicoredumper library development files
  Using libminicoredumper, an application can register exactly what data
@@ -41,6 +42,7 @@ Description: minicoredumper library development files
 
 Package: libminicoredumper2
 Architecture: linux-any
+Multi-Arch: same
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${misc:Pre-Depends}
 Description: minicoredumper library
  Using libminicoredumper, an application can register exactly what data
