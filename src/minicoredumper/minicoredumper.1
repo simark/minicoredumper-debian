@@ -1,0 +1,89 @@
+'\" t
+.\"
+.\" Copyright (c) 2015-2016 Ericsson AB
+.\" All rights reserved.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions are met:
+.\"
+.\" 1. Redistributions of source code must retain the above copyright notice,
+.\"    this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright notice,
+.\"    this list of conditions and the following disclaimer in the documentation
+.\"    and/or other materials provided with the distribution.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+.\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+.\" LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+.\" CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+.\" SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+.\" INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+.\" CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+.\" ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+.\" POSSIBILITY OF SUCH DAMAGE.
+.\"
+.TH MINICOREDUMPER 1 "2016-09-14" "Ericsson" "minicoredumper"
+.
+.SH NAME
+minicoredumper \- create a customized minimal
+.BR core (5)
+dump
+.
+.SH SYNOPSIS
+.B minicoredumper
+.I pid
+.I uid
+.I gid
+.I signal
+.I timestamp
+.I hostname
+.I executable
+.RI [ configuration-file ]
+.
+.SH DESCRIPTION
+.BR minicoredumper
+provides a highly configurable core dump mechanism. This program is intended
+to be executed by the Linux
+.BR core (5)
+dump facility. By default the main configuration file is:
+.PP
+.RS
+/etc/minicoredumper/minicoredumper.cfg.json
+.RE
+.PP
+but can be overridden if the optional 8th argument is specified.
+.PP
+.BR minicoredumper
+uses
+.BR syslog (3)
+to log its activity. The syslog
+.I ident
+is "minicoredumper" and the syslog
+.I facility
+is
+.IR LOG_SYSLOG .
+.
+.SH EXAMPLE
+Setup
+.BR minicoredumper
+to be used for
+.BR core (5)
+dumps.
+.PP
+.RS
+.nf
+echo '|/usr/sbin/minicoredumper %P %u %g %s %t %h %e' > \\
+     /proc/sys/kernel/core_pattern
+.fi
+.RE
+.
+.SH FILES
+/etc/minicoredumper/minicoredumper.cfg.json
+.
+.SH "SEE ALSO"
+.BR libminicoredumper (7),
+.BR minicoredumper.cfg.json (5)
+.PP
+The DiaMon Workgroup: <http://www.diamon.org>

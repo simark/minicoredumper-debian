@@ -1,0 +1,68 @@
+'\" t
+.\"
+.\" Copyright (c) 2015-2016 Ericsson AB
+.\" All rights reserved.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions are met:
+.\"
+.\" 1. Redistributions of source code must retain the above copyright notice,
+.\"    this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright notice,
+.\"    this list of conditions and the following disclaimer in the documentation
+.\"    and/or other materials provided with the distribution.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+.\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+.\" LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+.\" CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+.\" SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+.\" INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+.\" CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+.\" ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+.\" POSSIBILITY OF SUCH DAMAGE.
+.\"
+.TH MCD_DUMP_DATA_UNREGISTER 3 "2016-09-12" "Ericsson" "minicoredumper"
+.
+.SH NAME
+mcd_dump_data_unregister \- unregister previously registered dump data
+.
+.SH SYNOPSIS
+.nf
+.B #include <minicoredumper.h>
+
+.BI "int mcd_dump_data_unregister(mcd_dump_data_t " dd );
+.fi
+.PP
+Compile and link with
+.IR -lminicoredumper .
+.
+.SH DESCRIPTION
+The
+.BR mcd_dump_data_unregister ()
+function unregisters dump data previously registered with
+.BR mcd_dump_data_register_bin (3),
+.BR mcd_dump_data_register_text (3),
+.BR mcd_vdump_data_register_text (3).
+.I dd
+is a pointer to the registered dump that was saved during registration.
+.
+.SH "RETURN VALUE"
+.BR mcd_dump_data_unregister ()
+returns 0 on success, otherwise an error value is returned.
+.
+.SH ERRORS
+.TP
+.B ENOKEY
+.I dd
+was not found in the list of registered dumps.
+.
+.SH "SEE ALSO"
+.BR libminicoredumper (7),
+.BR mcd_dump_data_register_bin (3),
+.BR mcd_dump_data_register_text (3),
+.BR mcd_vdump_data_register_text (3)
+.PP
+The DiaMon Workgroup: <http://www.diamon.org>

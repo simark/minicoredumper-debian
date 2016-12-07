@@ -1,0 +1,206 @@
+'\" t
+.\"
+.\" Copyright (c) 2015-2016 Ericsson AB
+.\" All rights reserved.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions are met:
+.\"
+.\" 1. Redistributions of source code must retain the above copyright notice,
+.\"    this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright notice,
+.\"    this list of conditions and the following disclaimer in the documentation
+.\"    and/or other materials provided with the distribution.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+.\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+.\" LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+.\" CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+.\" SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+.\" INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+.\" CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+.\" ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+.\" POSSIBILITY OF SUCH DAMAGE.
+.\"
+.TH MCD_DUMP_DATA_REGISTER_BIN 3 "2016-09-12" "Ericsson" "minicoredumper"
+.
+.SH NAME
+mcd_dump_data_register_bin \- register binary data to be dumped
+.
+.SH SYNOPSIS
+.nf
+.B #include <minicoredumper.h>
+
+.BI "int mcd_dump_data_register_bin(const char *" ident ,
+.BI "                               unsigned long " dump_scope ,
+.BI "                               mcd_dump_data_t *" save_ptr ,
+.BI "                               void *" data_ptr ,
+.BI "                               size_t " data_size ,
+.BI "                               enum mcd_dump_data_flags " flags );
+.fi
+.PP
+Compile and link with
+.IR -lminicoredumper .
+.
+.SH DESCRIPTION
+The
+.BR mcd_dump_data_register_bin ()
+function registers binary data to be dumped.
+.I ident
+is a string to identify the binary dump later. If non-NULL, it must be
+unique! If
+.I ident
+is NULL, the data is only dumped if this is the crashing application,
+in which case the data will be explicitly stored in the
+.BR core (5)
+file. The data will only be dumped if a scope value greater than or equal to
+.I dump_scope
+is requested by the
+.BR minicoredumper (1).
+If
+.I save_ptr
+is non-NULL, a pointer to the registered dump will be stored there. This
+is needed if
+.BR mcd_dump_data_unregister (3)
+will be used.
+.I data_ptr
+contains a pointer to the memory location of the data to dump (or a pointer
+to that pointer).
+.I flags
+specifies how
+.I data_ptr
+and
+.I data_size
+should be interpreted when dumping data.
+.I data_size
+specifies the number of bytes of data to dump (or a pointer to the number).
+.
+.SH "DATA FLAGS"
+The
+.I flags
+option specifies how
+.I data_ptr
+and
+.I data_size
+should be interpreted when dumping data. It can also affect dump behavior.
+The flags are bitwise combined to describe the desired behavior. The flags
+available are:
+.TP
+.B MCD_DATA_PTR_DIRECT
+.I data_ptr
+is a pointer to the data to dump.
+.TP
+.B MCD_DATA_PTR_INDIRECT
+.I data_ptr
+is a pointer to a second pointer that points to the data to dump. The
+second pointer is evaluated at dump. See
+.B BUGS
+for details about the dangers of this flag.
+.TP
+.B MCD_LENGTH_DIRECT
+.I data_size
+specifies the size (in bytes) of data to dump.
+.TP
+.B MCD_LENGTH_INDIRECT
+.I data_size
+is a pointer to the size (in bytes) of data to dump. The pointer is
+evaluated at dump. See
+.B BUGS
+for details about the dangers of this flag.
+.TP
+.B MCD_DATA_NODUMP
+Do not dump the specified data and size. Only store information about
+where in memory and the
+.BR core (5)
+file this data would be stored. This information is stored in the
+.I symbol.map
+dump file and can be used by the
+.BR coreinject (1) 
+tool to inject data to the registered location.
+.
+.SH "RETURN VALUE"
+.BR mcd_dump_data_register_bin ()
+returns 0 on success, otherwise an error value is returned.
+.
+.SH ERRORS
+.TP
+.B ENOMEM
+Insufficient memory available to allocate internal structures.
+.TP
+.B EINVAL
+.I data_ptr
+was NULL,
+.I data_size
+was 0, or
+.I ident
+was invalid.
+.TP
+.B EEXIST
+A binary or text dump matching the non-NULL
+.I ident
+was already registered.
+.
+.SH EXAMPLES
+Register a binary dump with direct data and direct size.
+.PP
+.RS
+.nf
+mcd_dump_data_t dd1;
+unsigned long val1;
+
+mcd_dump_data_register_bin("bdump1.bin", 6, &dd1, &val1, sizeof(val1),
+                           MCD_DATA_PTR_DIRECT | MCD_LENGTH_DIRECT);
+.fi
+.RE
+.PP
+Register a binary dump with indirect data and direct size.
+.PP
+.RS
+.nf
+mcd_dump_data_t dd2;
+unsigned long *val2;
+
+val2 = malloc(sizeof(unsigned long));
+
+mcd_dump_data_register_bin("bdump2.bin", 6, &dd2, &val2, sizeof(*val2),
+                           MCD_DATA_PTR_INDIRECT | MCD_LENGTH_DIRECT);
+.fi
+.RE
+.PP
+Register a binary dump with indirect data and indirect size.
+.PP
+.RS
+.nf
+mcd_dump_data_t dd3;
+unsigned long *val3;
+size_t s3;
+
+s3 = sizeof(unsigned long);
+val3 = malloc(s3);
+
+mcd_dump_data_register_bin("bdump3.bin", 6, &dd3, &val3, (size_t)&s3,
+                           MCD_DATA_PTR_INDIRECT | MCD_LENGTH_INDIRECT);
+.fi
+.RE
+.
+.SH BUGS
+.I MCD_DATA_PTR_INDIRECT
+and
+.I MCD_LENGTH_INDIRECT
+allow an application to change the size and location of data to dump
+during run-time. However, such changes should be performed carefully
+because an application can not know when a dump will occur.
+.PP
+The string specified in
+.I ident
+is also the file name of the dump file. For this reason characters
+such as '/' are not permitted.
+.
+.SH "SEE ALSO"
+.BR libminicoredumper (7),
+.BR mcd_dump_data_unregister (3),
+.BR coreinject (1)
+.PP
+The DiaMon Workgroup: <http://www.diamon.org>

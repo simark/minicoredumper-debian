@@ -1,0 +1,63 @@
+'\" t
+.\"
+.\" Copyright (c) 2015-2016 Ericsson AB
+.\" All rights reserved.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions are met:
+.\"
+.\" 1. Redistributions of source code must retain the above copyright notice,
+.\"    this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright notice,
+.\"    this list of conditions and the following disclaimer in the documentation
+.\"    and/or other materials provided with the distribution.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+.\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+.\" LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+.\" CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+.\" SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+.\" INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+.\" CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+.\" ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+.\" POSSIBILITY OF SUCH DAMAGE.
+.\"
+.TH MINICOREDUMPER_TRIGGER 1 "2016-09-08" "Ericsson" "minicoredumper"
+.
+.SH NAME
+minicoredumper_trigger \- a tool to trigger dumps for all applications using
+.BR libminicoredumper (7).
+.
+.SH SYNOPSIS
+.B minicoredumper_trigger
+.I dump-directory
+.I dump-scope
+.
+.SH DESCRIPTION
+.B minicoredumper_trigger dumps data registered with
+.BR libminicoredumper (7)
+to the specified absolute path
+.IR dump-directory .
+Only data that was registered with a scope value less than or equal to the
+.I dump-scope
+will be dumped.
+.
+.SH NOTES
+In order to dump the registered data from applications based on
+.BR libminicoredumper (7),
+.B minicoredumper_trigger
+must have permissions to read the shared memory managed by
+.BR minicoredumper_regd (1)
+and permisssions to read the process memory of the applications. If some
+of these permissions are missing,
+.B minicoredumper_trigger
+will dump as much as it can.
+.
+.SH "SEE ALSO"
+.BR minicoredumper (1),
+.BR libminicoredumper (7),
+.BR minicoredumper_regd (1)
+.PP
+The DiaMon Workgroup: <http://www.diamon.org>
