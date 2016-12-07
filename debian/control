@@ -1,6 +1,6 @@
 Source: minicoredumper
 Section: devel
-Priority: optional
+Priority: extra
 Maintainer: John Ogness <john.ogness@linutronix.de>
 Build-Depends: debhelper (>= 10), libelf-dev, libjson-c-dev, pkg-config
 Standards-Version: 3.9.8
