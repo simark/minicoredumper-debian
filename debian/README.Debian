@@ -1,9 +1,18 @@
 minicoredumper for Debian
 -------------------------
 
-minicoredumper configured with: ./configure --prefix=/usr
+minicoredumper configured with:
+./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+
 configuration files in: /etc/minicoredumper
-boot options in: /etc/default/minicoredumper
+boot options in:        /etc/default/minicoredumper
 default dump base_path: /var/crash/minicoredumper
 
- -- John Ogness <john.ogness@linutronix.de>  Mon, 12 Sep 2016 14:41:45 +0200
+known issues:
+- a 64-bit minicoredumper can not make use of libminicoredumper-specific
+  features of a 32-bit libminicoredumper (registered dumps will not be
+  dumped)
+- large file support on 32-bit systems is only partially implemented, for
+  example fstat() on file with >32-bit inode number will fail
+
+ -- John Ogness <john.ogness@linutronix.de>  Tue, 13 Dec 2016 15:37:44 +0100
