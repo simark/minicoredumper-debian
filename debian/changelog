@@ -1,3 +1,12 @@
+minicoredumper (2.0.0-3) unstable; urgency=medium
+
+  * Change package priority to extra
+  * Fix VCS URL's
+  * Mark appropriate packages as multi-arch same
+  * Add known issues to README.Debian
+
+ -- John Ogness <john.ogness@linutronix.de>  Tue, 13 Dec 2016 15:41:03 +0100
+
 minicoredumper (2.0.0-2) unstable; urgency=medium
 
   * Require lsb-base >= 3.2-14 because reliance on /lib/lsb/init-functions
