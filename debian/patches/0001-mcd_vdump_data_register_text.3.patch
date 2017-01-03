@@ -6,6 +6,6 @@ Author: John Ogness <john.ogness@linutronix.de>
 Last-Update: 2016-11-29
 
 --- /dev/null
-+++ minicoredumper-2.0.0/src/api/mcd_vdump_data_register_text.3
++++ b/src/api/mcd_vdump_data_register_text.3
 @@ -0,0 +1 @@
 +.so man3/mcd_dump_data_register_text.3
