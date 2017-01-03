@@ -25,4 +25,4 @@ override_dh_fixperms:
 
 # main packaging script based on dh7 syntax
 %:
-	dh $@
+	dh $@ --with autoreconf
